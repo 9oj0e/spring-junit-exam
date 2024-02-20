@@ -52,14 +52,20 @@ public class BoardRepositoryTest {
     @Test
     public void update_test() {
         // given
+        String title = "수정된 제목";
         String content = "수정된 내용";
+//        String author = "수정자";
         int id = 1;
         // when
-        boardRepository.update(content, id);
+        boardRepository.update(title, content, id);
+//        boardRepository.update(title, content, author, id);
+
         // then
         Board board = boardRepository.selectOne(id);
         System.out.println(board);
+        Assertions.assertThat(board.getTitle()).isEqualTo("수정된 제목");
         Assertions.assertThat(board.getContent()).isEqualTo("수정된 내용");
+//        Assertions.assertThat(board.getAuthor()).isEqualTo("수정자");
     }
 
     @Test
