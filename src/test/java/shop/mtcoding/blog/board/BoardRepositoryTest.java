@@ -16,6 +16,17 @@ public class BoardRepositoryTest {
     private BoardRepository boardRepository;
 
     @Test
+    public void insert_test() { // TestMethod = parameter void, return void.
+        // given
+        String title = "제목1";
+        String content = "내용10";
+        String author = "이순신";
+        // when
+        boardRepository.insert(title, content, author);
+        // then
+    } // Rollback
+
+    @Test
     public void selectAll_test() {
         List<Board> boardList = boardRepository.selectAll();
         //boardRepository에서 데이터를 찾을 수 없으면?
@@ -39,13 +50,27 @@ public class BoardRepositoryTest {
     } // Rollback
 
     @Test
-    public void insert_test() { // TestMethod = parameter void, return void.
+    public void update_test() {
         // given
-        String title = "제목1";
-        String content = "내용10";
-        String author = "이순신";
+        String content = "수정된 내용";
+        int id = 1;
         // when
-        boardRepository.insert(title, content, author);
+        boardRepository.update(content, id);
         // then
-    } // Rollback
+        Board board = boardRepository.selectOne(id);
+        System.out.println(board);
+        Assertions.assertThat(board.getContent()).isEqualTo("수정된 내용");
+    }
+
+    @Test
+    public void delete_test() {
+        // given
+        int id = 1;
+        // when
+        boardRepository.delete(id);
+        // then
+        List<Board> boardList = boardRepository.selectAll();
+        System.out.println(boardList.size());
+        Assertions.assertThat(boardList.size()).isEqualTo(7);
+    }
 }
