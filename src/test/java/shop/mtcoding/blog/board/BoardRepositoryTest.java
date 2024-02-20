@@ -71,13 +71,15 @@ public class BoardRepositoryTest {
 
     @Test
     public void delete_test() {
+        List<Board> boardList = boardRepository.selectAll();
+        System.out.println("Query 실행 전 boardList Size: " + boardList.size());
         // given
         int id = 1;
         // when
         boardRepository.delete(id);
         // then
-        List<Board> boardList = boardRepository.selectAll();
-        System.out.println(boardList.size());
+        boardList = boardRepository.selectAll();
+        System.out.println("Query 실행 후 boardList Size: " + boardList.size());
         Assertions.assertThat(boardList.size()).isEqualTo(7);
     }
 }
