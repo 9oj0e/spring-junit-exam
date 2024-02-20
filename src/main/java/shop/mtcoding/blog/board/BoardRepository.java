@@ -14,11 +14,11 @@ public class BoardRepository {
     private final EntityManager em;
 
     @Transactional
-    public void insert(String title, String content, String author) {
+    public void insert(BoardRequest.SaveDTO requestDTO) {
         Query query = em.createNativeQuery("insert into board_tb(title, content, author) values(?, ?, ?)");
-        query.setParameter(1, title);
-        query.setParameter(2, content);
-        query.setParameter(3, author);
+        query.setParameter(1, requestDTO.getTitle());
+        query.setParameter(2, requestDTO.getContent());
+        query.setParameter(3, requestDTO.getAuthor());
 
         query.executeUpdate();
     }
@@ -29,7 +29,7 @@ public class BoardRepository {
         return (List<Board>) query.getResultList();
     }
 
-    public Board selectOne(int id) {
+    public Board selectById(int id) {
         Query query = em.createNativeQuery("select * from board_tb where id = ?", Board.class);
         query.setParameter(1, id);
 
@@ -40,24 +40,12 @@ public class BoardRepository {
         }
     }
 
-
     @Transactional
-    public void update(String title, String content, int id) {
+    public void update(BoardRequest.UpdateDTO requestDTO, int id) {
         Query query = em.createNativeQuery("update board_tb set title = ?, content = ? where id = ?;");
-        query.setParameter(1, title);
-        query.setParameter(2, content);
+        query.setParameter(1, requestDTO.getTitle());
+        query.setParameter(2, requestDTO.getContent());
         query.setParameter(3, id);
-
-        query.executeUpdate();
-    }
-
-    @Transactional
-    public void update(String title, String content, String author, int id) {
-        Query query = em.createNativeQuery("update board_tb set title = ?, content = ?, author = ? where id = ?;");
-        query.setParameter(1, title);
-        query.setParameter(2, content);
-        query.setParameter(3, author);
-        query.setParameter(4, id);
 
         query.executeUpdate();
     }

@@ -18,11 +18,12 @@ public class BoardRepositoryTest {
     @Test
     public void insert_test() { // TestMethod = parameter void, return void.
         // given
-        String title = "제목1";
-        String content = "내용10";
-        String author = "이순신";
+        BoardRequest.SaveDTO requestDTO = new BoardRequest.SaveDTO();
+        requestDTO.setTitle("제목1");
+        requestDTO.setContent("내용10");
+        requestDTO.setAuthor("이순신");
         // when
-        boardRepository.insert(title, content, author);
+        boardRepository.insert(requestDTO);
         // then
     } // Rollback
 
@@ -33,7 +34,7 @@ public class BoardRepositoryTest {
         //List<Board> boardList = new ArrayList<>();
 
         System.out.println(boardList);
-        Assertions.assertThat(boardList.size()).isEqualTo(10);
+        Assertions.assertThat(boardList.size()).isEqualTo(8);
     }
 
     @Test
@@ -41,7 +42,7 @@ public class BoardRepositoryTest {
         // given
         int id = 1;
         // when
-        Board board = boardRepository.selectOne(id);
+        Board board = boardRepository.selectById(id);
         // then (상태 검사)
         System.out.println(board);
         Assertions.assertThat(board.getTitle()).isEqualTo("제목1");
@@ -52,16 +53,16 @@ public class BoardRepositoryTest {
     @Test
     public void update_test() {
         // given
-        String title = "수정된 제목";
-        String content = "수정된 내용";
-//        String author = "수정자";
+        BoardRequest.UpdateDTO requestDTO = new BoardRequest.UpdateDTO();
+        requestDTO.setTitle("수정된 제목");
+        requestDTO.setContent("수정된 내용");
+//        requestDTO.setAuthor("수정자");
         int id = 1;
         // when
-        boardRepository.update(title, content, id);
-//        boardRepository.update(title, content, author, id);
+        boardRepository.update(requestDTO, id);
 
         // then
-        Board board = boardRepository.selectOne(id);
+        Board board = boardRepository.selectById(id);
         System.out.println(board);
         Assertions.assertThat(board.getTitle()).isEqualTo("수정된 제목");
         Assertions.assertThat(board.getContent()).isEqualTo("수정된 내용");
